@@ -1,6 +1,6 @@
 namespace StudentVoiceNU.Application.Interfaces.Services
 {
-    public interface IBaseService<T>
+    public interface ITestService
     {
         string GetMessage();
     }

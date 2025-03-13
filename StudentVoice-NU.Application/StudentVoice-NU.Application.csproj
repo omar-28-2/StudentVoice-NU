@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StudentVoice-NU.Domain\StudentVoice-NU.Domain.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,9 +1,12 @@
-using StudentVoiceNU.Application.Interfaces;
+using StudentVoiceNU.Application.Interfaces.Services;
 
-namespace StudentVoiceNU.Application.Interfaces.Services
+namespace StudentVoiceNU.Application.Services
 {
-    public class TestService : IBaseService<string>
+    public class TestService : ITestService
     {
-        public string GetMessage() => "Hello from Clean Architecture!";
+        public string GetMessage()
+        {
+            return "Hello from TestService!";
+        }
     }
 }

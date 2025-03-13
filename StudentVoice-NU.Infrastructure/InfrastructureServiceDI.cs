@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using StudentVoiceNU.Infrastructure.Services;
+using StudentVoiceNU.Application.Interfaces.Repositories;
+using StudentVoiceNU.Infrastructure.Repositories;
+using StudentVoiceNU.Infrastructure.Repositories.Common;
 
 namespace StudentVoiceNU.Infrastructure
 {
@@ -7,9 +9,8 @@ namespace StudentVoiceNU.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddScoped<FileStorageService>();
-            services.AddScoped<EmailService>();
-            services.AddScoped<LoggingService>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<ISampleRepository, SampleRepository>();
         }
     }
 }
