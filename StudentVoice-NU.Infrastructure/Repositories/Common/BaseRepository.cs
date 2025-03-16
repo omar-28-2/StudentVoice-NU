@@ -1,13 +1,16 @@
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using StudentVoiceNU.Domain.Entities;
 using StudentVoiceNU.Application.Interfaces.Repositories;
 using StudentVoiceNU.Infrastructure.Contexts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace StudentVoiceNU.Infrastructure.Repositories.Common
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : SampleEntity
     {
         private readonly StudentVoiceDbContext _context;
         private readonly DbSet<T> _dbSet;
