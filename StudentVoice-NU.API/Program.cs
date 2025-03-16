@@ -15,7 +15,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseMiddleware<LoggingMiddleware>();
+builder.Services.AddScoped<IMessageWriter, LoggingMessageWriter>();
+
+app.UseMyCustomMiddleware();
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
