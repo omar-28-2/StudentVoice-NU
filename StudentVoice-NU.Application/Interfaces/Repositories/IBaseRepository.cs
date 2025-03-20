@@ -3,7 +3,7 @@ using StudentVoiceNU.Domain.Entities;
 
 namespace StudentVoiceNU.Application.Interfaces.Repositories
 {
-    public interface IBaseRepository<T> where T : SampleEntity
+    public interface IBaseRepository<T> where T : BaseEntity
     {
         // GET 
         Task<T> GetbyId(int id);
