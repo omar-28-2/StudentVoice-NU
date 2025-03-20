@@ -1,24 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using StudentVoiceNU.Application.Interfaces.Services;
 
 namespace StudentVoiceNU.API.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/[controller]")] // Generalized Route
     public class TestController : ControllerBase
     {
-        private readonly ITestService _testService;
-
-        public TestController(ITestService testService) // Inject the service
-        {
-            _testService = testService;
-        }
-
         [HttpGet]
-        public IActionResult GetTestMessage()
+        public IActionResult GetTest()
         {
-            var message = _testService.GetMessage();
-            return Ok(new { message });
+            return Ok("The project is running!");
         }
     }
 }

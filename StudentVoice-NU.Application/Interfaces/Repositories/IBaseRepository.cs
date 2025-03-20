@@ -1,25 +1,20 @@
 using System.Linq.Expressions;
+using StudentVoiceNU.Domain.Entities;
 
 namespace StudentVoiceNU.Application.Interfaces.Repositories
 {
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseRepository<T> where T : BaseEntity
     {
-        // Create (Insert)
-        Task<T> AddAsync(T entity);
-        Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
+        // GET 
+        Task<T> GetbyId(int id);
 
-        // Read (Get)
-        Task<T?> GetByIdAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        // Create 
+        Task<T> Create(T entity);
 
         // Update
-        Task UpdateAsync(T entity);
-        Task UpdateRangeAsync(IEnumerable<T> entities);
+        Task<T> Update(T entity);
 
         // Delete
-        Task DeleteAsync(T entity);
-        Task DeleteRangeAsync(IEnumerable<T> entities);
-        Task<bool> ExistsAsync(int id);
+        Task<T> Delete(int id);
     }
 }

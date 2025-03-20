@@ -1,7 +1,7 @@
 namespace StudentVoiceNU.Domain.DTOs
 {
-    public abstract class BaseDto
+    public class BaseDto
     {
-        public int Id { get; set; }
+        // it will be take asubset of any entity to use it in the service layer
     }
 }
