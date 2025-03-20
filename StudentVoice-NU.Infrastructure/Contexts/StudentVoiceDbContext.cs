@@ -7,8 +7,8 @@ namespace StudentVoiceNU.Infrastructure.Contexts
     {
         public StudentVoiceDbContext(DbContextOptions<StudentVoiceDbContext> options) : base(options)
         {
+            
         }
-
         public DbSet<BaseEntity> BaseEntities { get; set; } 
     }
 }

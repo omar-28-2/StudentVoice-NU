@@ -19,7 +19,7 @@ namespace StudentVoiceNU.Infrastructure.Repositories
 
         public async Task<T> Delete(int id)
         {
-            var entity = await _table.FindAsync(id);
+            var  entity = await _table.FindAsync(id);
             if (entity == null)
             {
                 return entity;
