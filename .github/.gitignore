@@ -400,5 +400,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 
-Secrets/
-StudentVoice-NU.API/Secrets/student-voice-f22b7-firebase-adminsdk-fbsvc-ab5c4645b9.json
+
+
+StudentVoice-NU.API/Secrets/*.json
