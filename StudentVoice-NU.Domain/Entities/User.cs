@@ -8,6 +8,9 @@ public class User : AuditableEntity
     public int EnrollmentYear { get; set; }
     public UserRole Role { get; set; }
     public List<Post> Posts { get; set; }
+
+    public List<Comment> Comments { get; set; }
+    public List<Vote> Votes { get; set; }
 }
 public enum UserRole
 {
