@@ -14,7 +14,7 @@ namespace StudentVoiceNU.Infrastructure.Contexts.EntityConfigurations
             // Configure properties
             builder.Property(f => f.Name)
                 .IsRequired()
-                .HasMaxLength(100); // Example: Limit forum name to 100 characters
+                .HasMaxLength(100); 
 
             builder.Property(f => f.Type)
                 .IsRequired();
