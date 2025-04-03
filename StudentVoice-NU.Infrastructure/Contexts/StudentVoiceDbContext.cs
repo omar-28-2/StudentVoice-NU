@@ -23,24 +23,10 @@ namespace StudentVoiceNU.Infrastructure.Contexts
         public DbSet<Comment> Comments { get; set; }
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<Admin> Admins { get; set; }
-
-//     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//         {
-//             if (!optionsBuilder.IsConfigured)
-//             {
-//                 optionsBuilder.UseSqlServer("Server=DESKTOP-91S1SOI;Database=StudentVoice;Trusted_Connection=True;TrustServerCertificate=True;");
-//         }
-// }
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     base.OnModelCreating(modelBuilder);
-
-    // Apply configurations
-    modelBuilder.ApplyConfiguration(new UserConfiguration());
-    modelBuilder.ApplyConfiguration(new PostConfiguration());
-    modelBuilder.ApplyConfiguration(new CommentConfiguration());
-    modelBuilder.ApplyConfiguration(new ForumConfiguration());
-    modelBuilder.ApplyConfiguration(new VoteConfiguration());
+    modelBuilder.ApplyConfigurationsFromAssembly(typeof(StudentVoiceDbContext).Assembly);
 }
     }
 }
