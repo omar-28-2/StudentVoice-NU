@@ -9,7 +9,7 @@ namespace StudentVoiceNU.Infrastructure.Contexts.EntityConfigurations
         public void Configure(EntityTypeBuilder<Forum> builder)
         {
             // Set primary key
-            builder.HasKey(f => f.ForumID);
+            builder.HasKey(f => f.Id);
 
             // Configure properties
             builder.Property(f => f.Name)
