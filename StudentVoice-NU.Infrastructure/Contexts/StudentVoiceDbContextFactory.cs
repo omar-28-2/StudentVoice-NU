@@ -17,7 +17,7 @@ namespace StudentVoiceNU.Infrastructure.Contexts
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            string connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not found.");
 
             optionsBuilder.UseSqlServer(connectionString);
 
