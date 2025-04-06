@@ -7,8 +7,6 @@ namespace StudentVoiceNU.Domain.Entities
 
         // all features we will implement we should use id , created at , updated at to service on {users , posts , comments}
         public int Id { get; set; }
-        public DateTime createdAt { get; set; } 
-
-        public DateTime updatedAt { get; set; }
+        
     }
 }
