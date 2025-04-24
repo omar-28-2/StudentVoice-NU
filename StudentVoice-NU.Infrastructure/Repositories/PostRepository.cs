@@ -13,12 +13,22 @@ namespace StudentVoiceNU.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<Post>> GetPostsByUserId(int userId)
+        public async Task<Post?> GetById(int id) 
+        {
+            return await _context.Posts
+                .Include(p => p.Comments)
+                .Include(p => p.Votes)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+        public async Task<IEnumerable<Post>> GetPostsByUserId(int userId,int postNumber=1,int postSize=10)
         {
             return await _context.Posts
                 .Where(p => p.UserId == userId)
                 .Include(p => p.Comments) 
                 .Include(p => p.Votes)    
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((postNumber - 1) * postSize)
+                .Take(postSize)
                 .ToListAsync();
         }
     }
