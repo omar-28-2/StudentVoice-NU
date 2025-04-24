@@ -2,18 +2,14 @@ using StudentVoiceNU.Application.Interfaces.Repositories;
 using StudentVoiceNU.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using StudentVoiceNU.Infrastructure.Contexts; 
+using StudentVoiceNU.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddSwaggerGen(); 
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-
-builder.Services.AddDbContext<StudentVoiceDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.RegisterInfrastructureServices(builder.Configuration);
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
