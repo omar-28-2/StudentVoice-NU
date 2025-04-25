@@ -10,13 +10,13 @@ namespace StudentVoiceNU.Infrastructure.Services
 
         public PostService(IPostRepository postRepository)
         {
-            _postRepository = postRepository;
+            _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
         }
 
-        public async Task<IEnumerable<PostDto>> GetPostsByUser(int userId, int pageNumber, int pageSize)
+        public async Task<IEnumerable<ReadPostDto>> GetPostsByUser(int userId, int pageNumber, int pageSize)
         {
             var posts = await _postRepository.GetPostsByUserId(userId, pageNumber, pageSize);
-            return posts.Select(p => new PostDto
+            return posts.Select(p => new ReadPostDto
             {
                 Id = p.Id,
                 Content = p.Content,
@@ -24,20 +24,29 @@ namespace StudentVoiceNU.Infrastructure.Services
             });
         }
 
-        public async Task<PostDto?> GetPostById(int id)
+        public async Task<ReadPostDto?> GetPostById(int id,int commentsPageNumber = 1, int commentsPageSize = 10, int votesPageNumber = 1, int votesPageSize = 10)
         {
-            var post = await _postRepository.GetbyId(id);
+            var post = await _postRepository.GetPostbyId(id);
             if (post == null) return null;
 
-            return new PostDto
-            {
-                Id = post.Id,
-                Content = post.Content,
-                CreatedAt = post.CreatedAt
-            };
-        }
+            var commentsCount = await _postRepository.GetCommentsCountByPostId(id);
+            var votesCount = await _postRepository.GetVotesCountByPostId(id);
 
-        public async Task<PostDto> CreatePost(CreatePostDto dto)
+            var comments = await _postRepository.GetCommentsByPostId(id, commentsPageNumber, commentsPageSize);
+            var votes = await _postRepository.GetVotesByPostId(id, votesPageNumber, votesPageSize);
+
+        return new ReadPostDto
+        {
+            Id = post.Id,
+            Content = post.Content,
+            CreatedAt = post.CreatedAt,
+            CommentsCount = commentsCount,  
+            VotesCount = votesCount,        
+            Comments = comments,            
+            Votes = votes                   
+        };
+        }
+        public async Task<ReadPostDto> CreatePost(CreatePostDto dto)
         {
             var post = new Post
             {
@@ -47,7 +56,7 @@ namespace StudentVoiceNU.Infrastructure.Services
             };
 
             var created = await _postRepository.Create(post);
-            return new PostDto
+            return new ReadPostDto
             {
                 Id = created.Id,
                 Content = created.Content,
@@ -55,13 +64,13 @@ namespace StudentVoiceNU.Infrastructure.Services
             };
         }
 
-        public async Task<bool> UpdatePost(int id, CreatePostDto dto)
+        public async Task<bool> UpdatePost(int id, ReadPostDto dto)
         {
             var post = await _postRepository.GetbyId(id);
             if (post == null) return false;
 
             post.Content = dto.Content;
-            post.UserId = dto.UserId;
+            post.UserId = dto.Id;
 
             await _postRepository.Update(post);
             return true;
