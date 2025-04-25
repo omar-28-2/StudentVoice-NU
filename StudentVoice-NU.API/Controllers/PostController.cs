@@ -13,11 +13,11 @@ namespace StudentVoiceNU.API.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly IPostService _postService;
-        public PostController(IPostRepository postRepository)
-        {
-            _postRepository = postRepository;
-            _postService = new PostService(postRepository);
-        }
+    public PostController(IPostRepository postRepository, IPostService postService)
+    {
+        _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
+        _postService = postService ?? throw new ArgumentNullException(nameof(postService));
+    }
 
     [HttpGet("user/{userId}/posts")]
     public async Task<IActionResult> GetPost(
@@ -29,9 +29,9 @@ namespace StudentVoiceNU.API.Controllers
         return Ok(posts);
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetPostById(int id)
+    public async Task<IActionResult> GetPostById(int id,[FromQuery] int commentsPageNumber = 1, [FromQuery] int commentsPageSize = 10, [FromQuery] int votesPageNumber = 1, [FromQuery] int votesPageSize = 10)
     {
-        var post = await _postService.GetPostById(id);
+        var post = await _postService.GetPostById(id, commentsPageNumber, commentsPageSize, votesPageNumber, votesPageSize);
         if (post == null) return NotFound();
         return Ok(post);
     }
@@ -43,9 +43,9 @@ namespace StudentVoiceNU.API.Controllers
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePost(int id, [FromBody] CreatePostDto updatePostDto)
+    public async Task<IActionResult> UpdatePost(int id, [FromBody] ReadPostDto readPostDto)
     {
-        var isUpdated = await _postService.UpdatePost(id, updatePostDto);
+        var isUpdated = await _postService.UpdatePost(id, readPostDto);
         if (!isUpdated) return NotFound();
         return NoContent();
     }
