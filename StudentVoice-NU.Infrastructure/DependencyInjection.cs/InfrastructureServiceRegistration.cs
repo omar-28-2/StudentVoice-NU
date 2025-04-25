@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using StudentVoiceNU.Application.Interfaces.Repositories;
 using StudentVoiceNU.Infrastructure.Repositories;
 using StudentVoiceNU.Infrastructure.Contexts;
+using StudentVoiceNU.Application.Services;
+using StudentVoiceNU.Infrastructure.Services;
 
 namespace StudentVoiceNU.Infrastructure.DependencyInjection
 {
@@ -19,6 +21,8 @@ namespace StudentVoiceNU.Infrastructure.DependencyInjection
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
+            services.AddScoped<IPostService, PostService>();
+            
             return services;
         }
     }
