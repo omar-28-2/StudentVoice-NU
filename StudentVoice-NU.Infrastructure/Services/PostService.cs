@@ -29,9 +29,6 @@ namespace StudentVoiceNU.Infrastructure.Services
             var post = await _postRepository.GetPostbyId(id);
             if (post == null) return null;
 
-            var commentsCount = await _postRepository.GetCommentsCountByPostId(id);
-            var votesCount = await _postRepository.GetVotesCountByPostId(id);
-
             var comments = await _postRepository.GetCommentsByPostId(id, commentsPageNumber, commentsPageSize);
             var votes = await _postRepository.GetVotesByPostId(id, votesPageNumber, votesPageSize);
 
@@ -39,9 +36,7 @@ namespace StudentVoiceNU.Infrastructure.Services
         {
             Id = post.Id,
             Content = post.Content,
-            CreatedAt = post.CreatedAt,
-            CommentsCount = commentsCount,  
-            VotesCount = votesCount,        
+            CreatedAt = post.CreatedAt,        
             Comments = comments,            
             Votes = votes                   
         };
