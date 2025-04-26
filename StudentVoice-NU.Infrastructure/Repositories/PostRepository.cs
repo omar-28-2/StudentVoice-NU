@@ -17,14 +17,12 @@ namespace StudentVoiceNU.Infrastructure.Repositories
     public async Task<ReadPostDto?> GetPostbyId(int id,int commentsPageNumber = 1, int commentsPageSize = 10, int votesPageNumber = 1, int votesPageSize = 10)
     {
     return await _context.Posts
-        .Where(p => p.Id == id)
+        .Where(p => p.UserId == id)
         .Select(p => new ReadPostDto
         {
             Id = p.Id,
             Content = p.Content,
             CreatedAt = p.CreatedAt,
-            CommentsCount = p.Comments.Count,
-            VotesCount = p.Votes.Count
         })
         .FirstOrDefaultAsync();
         }
@@ -45,19 +43,7 @@ namespace StudentVoiceNU.Infrastructure.Repositories
         .Take(pageSize)
         .ToListAsync();
     }
-    public async Task<int> GetCommentsCountByPostId(int postId)
-    {
-        return await _context.Comments
-            .Where(c => c.PostId == postId)
-            .CountAsync();
-    }
-
-    public async Task<int> GetVotesCountByPostId(int postId)
-    {
-        return await _context.Votes
-            .Where(v => v.PostId == postId)
-            .CountAsync();
-    }
+   
     public async Task<IEnumerable<Post>> GetPostsByUserId(int userId,int postNumber=1,int postSize=10)
     {
         return await _context.Posts
