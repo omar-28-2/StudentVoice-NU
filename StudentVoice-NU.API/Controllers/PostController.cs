@@ -11,11 +11,9 @@ namespace StudentVoiceNU.API.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IPostRepository _postRepository;
         private readonly IPostService _postService;
-    public PostController(IPostRepository postRepository, IPostService postService)
+    public PostController( IPostService postService)
     {
-        _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
         _postService = postService ?? throw new ArgumentNullException(nameof(postService));
     }
 
@@ -29,11 +27,18 @@ namespace StudentVoiceNU.API.Controllers
         return Ok(posts);
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetPostById(int id,[FromQuery] int commentsPageNumber = 1, [FromQuery] int commentsPageSize = 10, [FromQuery] int votesPageNumber = 1, [FromQuery] int votesPageSize = 10)
+    public async Task<IActionResult> GetPostById(int Userid,[FromQuery] PostDetailsQueryDto postDetailsQueryDto)
     {
-        var post = await _postService.GetPostById(id, commentsPageNumber, commentsPageSize, votesPageNumber, votesPageSize);
+        var commentsPageNumber = postDetailsQueryDto.CommentsPageNumber;
+        var commentsPageSize = postDetailsQueryDto.CommentsPageSize;
+        var votesPageNumber = postDetailsQueryDto.VotesPageNumber;
+        var votesPageSize = postDetailsQueryDto.VotesPageSize;
+    {
+        var post = await _postService.GetPostById(Userid, commentsPageNumber, commentsPageSize, votesPageNumber, votesPageSize);
         if (post == null) return NotFound();
+        
         return Ok(post);
+    }
     }
     [HttpPost]
     public async Task<ActionResult<Post>> CreatePost([FromBody] CreatePostDto createPostDto)
