@@ -1,4 +1,4 @@
-using StudentVoiceNU.Application.Interfaces.Repositories; // Ensure the correct namespace for IBaseRepository
+using StudentVoiceNU.Application.Interfaces.Repositories; 
 public interface ICommentRepository : IBaseRepository<Comment>
 {
     Task<Comment?> GetById(int id);
