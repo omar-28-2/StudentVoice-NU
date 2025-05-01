@@ -10,7 +10,7 @@ public class VoteService : IVoteService
 
     public VoteService(IVoteRepository voteRepository)
     {
-        _voteRepository = voteRepository;
+        _voteRepository = voteRepository ?? throw new ArgumentNullException(nameof(voteRepository));
     }
 
     public async Task<bool> Upvote(CreateVoteDto dto)
@@ -36,8 +36,12 @@ public class VoteService : IVoteService
         var vote = await _voteRepository.GetUserVoteOnPost(dto.UserId, dto.PostId);
         if (vote != null)
         {
-            vote.IsUpvote = false;
-            return await _voteRepository.Update(vote) != null;
+            if (vote.IsUpvote == true)
+                {
+                    vote.IsUpvote = false;
+                    return await _voteRepository.Update(vote) != null;
+                }
+            return false;
         }
 
         return await _voteRepository.Create(new Vote
@@ -48,10 +52,15 @@ public class VoteService : IVoteService
             CreatedAt = DateTime.UtcNow
         }) != null;
     }
-
     public async Task<bool> RemoveVote(CreateVoteDto dto)
-    {
-        return await _voteRepository.DeleteByUserAndPost(dto.UserId, dto.PostId);
-    }
+        {
+            var vote = await _voteRepository.GetUserVoteOnPost(dto.UserId, dto.PostId);
+            if (vote == null)
+            {
+                return false; 
+            }
+
+            return await _voteRepository.DeleteVote(vote.Id);
+        }
 }
 }

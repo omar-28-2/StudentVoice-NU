@@ -8,7 +8,7 @@ public class VoteRepository : BaseRepository<Vote>, IVoteRepository
 
     public VoteRepository(StudentVoiceDbContext context) : base(context)
     {
-        _context = context;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public async Task<Vote?> GetUserVoteOnPost(int userId, int postId)
@@ -17,16 +17,15 @@ public class VoteRepository : BaseRepository<Vote>, IVoteRepository
             .FirstOrDefaultAsync(v => v.UserId == userId && v.PostId == postId);
     }
 
-    public async Task<bool> DeleteByUserAndPost(int userId, int postId)
+    public async Task<bool> DeleteVote(int id)
 {
-    var vote = await _context.Votes
-        .FirstOrDefaultAsync(v => v.UserId == userId && v.PostId == postId);
-
+    var vote = await _context.Votes.FindAsync(id);
     if (vote == null) return false;
 
     _context.Votes.Remove(vote);
     await _context.SaveChangesAsync();
     return true;
 }
+
 
 }

@@ -2,5 +2,5 @@ using StudentVoiceNU.Application.Interfaces.Repositories; // Ensure the correct 
 public interface ICommentRepository : IBaseRepository<Comment>
 {
     Task<Comment?> GetById(int id);
-    Task<IEnumerable<Comment>> GetCommentsByPostId(int postId);
+    Task<IEnumerable<Comment>> GetCommentsByPost(int postId, int page, int pageSize);
 }

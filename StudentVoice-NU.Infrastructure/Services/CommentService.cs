@@ -9,10 +9,11 @@ public class CommentService : ICommentService
 
     public CommentService(ICommentRepository commentRepository)
     {
-        _commentRepository = commentRepository;
+        _commentRepository = commentRepository ?? throw new ArgumentNullException(nameof(commentRepository));
+        // _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<ReadCommentDto> AddComment(CreateCommentDto dto)
+    public async Task<ReadCommentDto> CreateComment(CreateCommentDto dto)
     {
         var comment = new Comment
         {
@@ -50,20 +51,16 @@ public class CommentService : ICommentService
 
     public async Task<IEnumerable<ReadCommentDto>> GetCommentsByPost(int postId, int page, int pageSize)
         {
-            var allComments = await _commentRepository.GetCommentsByPostId(postId);
-            var paginated = allComments
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(c => new ReadCommentDto
-                {
-                    Id = c.Id,
-                    Content = c.Content,
-                    CreatedAt = c.CreatedAt,
-                    UserId = c.UserId,
-                    PostId = c.PostId
-                });
+            var comments = await _commentRepository.GetCommentsByPost(postId, page, pageSize);
 
-            return paginated;
+            return comments.Select(c => new ReadCommentDto
+            {
+                Id = c.Id,
+                Content = c.Content,
+                CreatedAt = c.CreatedAt,
+                UserId = c.UserId,
+                PostId = c.PostId
+            });
         }
 
     
