@@ -18,7 +18,7 @@ namespace StudentVoiceNU.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] CreateCommentDto dto)
         {
-            var comment = await _commentService.AddComment(dto);
+            var comment = await _commentService.CreateComment(dto);
             return CreatedAtAction(nameof(GetCommentById), new { id = comment.Id }, comment);
         }
 
@@ -31,12 +31,12 @@ namespace StudentVoiceNU.API.Controllers
         }
 
         [HttpGet("post/{postId}")]
-        public async Task<IActionResult> GetCommentsByPostId(int postId)
+        public async Task<IActionResult> GetCommentsByPostId(int postId, [FromQuery] CommentQueryDto queryDto)
         {
-            var comments = await _commentService.GetCommentsByPost(postId, 1, 10);
-;
+            var comments = await _commentService.GetCommentsByPost(postId, queryDto.Page, queryDto.PageSize);
             return Ok(comments);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateComment(int id, [FromBody] UpdateCommentDto dto)

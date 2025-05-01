@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using StudentVoiceNU.Domain.DTOs; 
-using StudentVoiceNU.Application.Services; // Replace with the actual namespace containing IVoteService
+using StudentVoiceNU.Domain.DTOs;
+using StudentVoiceNU.Application.Services;
+
 namespace StudentVoiceNU.API.Controllers
 {
     [Route("api/[controller]")]
@@ -11,23 +12,24 @@ namespace StudentVoiceNU.API.Controllers
 
         public VotesController(IVoteService voteService)
         {
-            _voteService = voteService;
+            _voteService = voteService ?? throw new ArgumentNullException(nameof(voteService));
         }
 
-        [HttpPost("upvote")]
-        public async Task<IActionResult> Upvote([FromBody] CreateVoteDto dto)
+        [HttpPost]
+        public async Task<IActionResult> CreateVote([FromBody] CreateVoteDto dto)
         {
-            var success = await _voteService.Upvote(dto);
-            if (!success) return BadRequest("Failed to upvote.");
-            return Ok("Upvote registered.");
-        }
+            if (dto == null || string.IsNullOrWhiteSpace(dto.VoteType))
+                return BadRequest("Invalid vote data.");
 
-        [HttpPost("downvote")]
-        public async Task<IActionResult> Downvote([FromBody] CreateVoteDto dto)
-        {
-            var success = await _voteService.Downvote(dto);
-            if (!success) return BadRequest("Failed to downvote.");
-            return Ok("Downvote registered.");
+            var result = dto.VoteType.ToLower() switch
+            {
+                "upvote" => await _voteService.Upvote(dto),
+                "downvote" => await _voteService.Downvote(dto),
+                _ => false
+            };
+
+            if (!result) return BadRequest("Failed to register vote.");
+            return Ok("Vote registered.");
         }
 
         [HttpDelete]
