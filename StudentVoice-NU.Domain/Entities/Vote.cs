@@ -7,6 +7,9 @@ public class Vote : BaseEntity
     public VoteType Type { get; set; }
     public Post Post { get; set; }
     public User User { get; set; }
+
+         public bool IsUpvote { get; set; }         // Required
+        public DateTime CreatedAt { get; set; }
 }
 public enum VoteType
 {
