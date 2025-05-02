@@ -1,4 +1,9 @@
+using StudentVoiceNU.Application.Interfaces.Repositories;
+using StudentVoiceNU.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using StudentVoiceNU.Infrastructure.Contexts; 
 using StudentVoiceNU.Infrastructure.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(); 

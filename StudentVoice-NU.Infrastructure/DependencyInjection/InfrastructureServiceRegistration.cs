@@ -24,6 +24,8 @@ namespace StudentVoiceNU.Infrastructure.DependencyInjection
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IVoteRepository, VoteRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostService, PostService>();
             return services;
         }
     }
